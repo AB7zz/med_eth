@@ -4,13 +4,12 @@ import { DataContext } from '../../DataContext'
 
 const View = () => {
   const {database, pdf, account} = useContext(DataContext)
-  console.log(database)
   const [loading, setLoading] = useState(true)
   const [myRecords, setMyRecords] = useState([])
   const [myPrescs, setMyPrescs] = useState([])
 
   const loadMyRecords = async () => {
-    const recordCount = await database.recordCount()
+    const recordCount = await database.recordCount
     let myRecords = []
     for(let index=1; index<=recordCount; index++){
       const i = await database.records(index)
@@ -29,11 +28,11 @@ const View = () => {
     setMyRecords(myRecords)
   }
   const loadMyPrescs = async () => {
-    const prescCount = await database.prescCount()
+    const prescCount = await database.prescCount
     let myPrescs = []
     for(let index=1; index<=prescCount; index++){
       const i = await database.prescs(index)
-      if(i.user.toLowerCase() == account){
+      // if(i.user.toLowerCase() == account){
         const uri = await pdf.tokenURI(i.tokenId)
         const response = await fetch(uri)
         const metadata = await response.json()
@@ -43,7 +42,7 @@ const View = () => {
           pdf: metadata.pdf
         }
         myPrescs.push(presc)
-      }
+      // }
     }
     setMyPrescs(myPrescs)
   }
