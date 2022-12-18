@@ -5,6 +5,7 @@ import './noscript.css'
 import {create as ipfsHttpClient} from 'ipfs-http-client'
 import { DataContext } from '../../DataContext'
 import {Buffer} from 'buffer';
+import { useNavigate, Link } from 'react-router-dom'
 
 const projectId = '2J3PQbJ31uQWC7oH0jrnnPgLZm7';
 const projectSecret = '5ba7f1c64e43d21f6a14015733ed3d39';
@@ -63,7 +64,8 @@ const Profile = () => {
     await (await pdf.setApprovalForAll(database.address, true)).wait()
 
     await (await database.uploadRecord(pdf.address, '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', id, doctor))
-    window.location.replace(`https://med-eth.infura-ipfs.io/ipfs/${result.path}`)
+    const navigate = useNavigate()
+    navigate('/view')
   }
   return (
     <>
@@ -115,7 +117,7 @@ const Profile = () => {
                                     </header>
                                     <footer>
                                         <ul className="buttons">
-                                            <li><a href="#" className="button small">View</a></li>
+                                            <li><Link to='/view' className="button small">View</Link></li>
                                         </ul>
                                     </footer>
                                 </section>
