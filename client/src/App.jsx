@@ -8,10 +8,10 @@ import Upload from './components/Upload/Upload'
 import { DataContext } from './DataContext';
 
 function App() {
-  const { web3Handler } = useContext(DataContext)
-  useEffect(() => {
-    web3Handler()
-  }, [])
+  const { web3Handler, account } = useContext(DataContext)
+  // useEffect(() => {
+  //   web3Handler()
+  // }, [])
   return (
     <BrowserRouter>
       <Routes>

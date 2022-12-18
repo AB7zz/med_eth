@@ -1,7 +1,14 @@
-import React from 'react'
+import React, {useContext, useEffect} from 'react'
 import './Home.css'
+import { DataContext } from '../../DataContext'
+import { Link } from 'react-router-dom'
+import './fontawesome-all.min.css'
 
 const Home = () => {
+    const { web3Handler, account } = useContext(DataContext)
+    console.log(account)
+    
+    
   return (
     <>
     <div id="page-wrapper">
@@ -11,12 +18,12 @@ const Home = () => {
                     <h1 id="logo"><a href="index.html">Med_ETH</a></h1>
                     <nav id="nav">
                         <ul>
-                            <li className="current"><a href="index.html">HOME</a></li>
+                            <li className="current"><a>HOME</a></li>
                             <li className="submenu">
-                                <a href="#">Login</a>
+                                {account ? <Link to='/profile'><button href="/profile">{account}</button></Link> : <Link onClick={web3Handler}>Login</Link>}
                                 <ul>
                                     <li><a href="left-sidebar.html">User</a></li>
-                                    <li><a href="right-sidebar.html">Medical proffessional</a></li>
+                                    <li><a href="right-sidebar.html">Medical Professional</a></li>
                                 
                                     
                                 </ul>
@@ -51,7 +58,7 @@ const Home = () => {
                 <article id="main">
 
                     <header className="special container">
-                        <span className="icon solid fa-chart-bar"></span>
+                        {/* <span className="icon solid fa-chart-bar"></span> */}
                         <h2>
                         <br /><strong>Med_ETH</strong> is a patient-centered health data ecosystem that
                         can protect individual privacy and maximize the reliability of health data.
@@ -78,12 +85,12 @@ const Home = () => {
                                 <div className="col-4 col-12-narrower imp-narrower">
 
                                     <ul className="featured-icons">
-                                        <li><span className="icon fa-clock"><span className="label">Feature 1</span></span></li>
+                                        {/* <li><span className="icon fa-clock"><span className="label">Feature 1</span></span></li>
                                         <li><span className="icon solid fa-volume-up"><span className="label">Feature 2</span></span></li>
                                         <li><span className="icon solid fa-laptop"><span className="label">Feature 3</span></span></li>
                                         <li><span className="icon solid fa-inbox"><span className="label">Feature 4</span></span></li>
                                         <li><span className="icon solid fa-lock"><span className="label">Feature 5</span></span></li>
-                                        <li><span className="icon solid fa-cog"><span className="label">Feature 6</span></span></li>
+                                        <li><span className="icon solid fa-cog"><span className="label">Feature 6</span></span></li> */}
                                     </ul>
 
                                 </div>
@@ -96,7 +103,7 @@ const Home = () => {
                                 <div className="col-4 col-12-narrower">
 
                                     <section>
-                                        <span className="icon solid featured fa-check"></span>
+                                        {/* <span className="icon solid featured fa-check"></span> */}
                                         <header>
                                             <h3>Simple</h3>
                                         </header>
@@ -107,7 +114,7 @@ const Home = () => {
                                 <div className="col-4 col-12-narrower">
 
                                     <section>
-                                        <span className="icon solid featured fa-check"></span>
+                                        {/* <span className="icon solid featured fa-check"></span> */}
                                         <header>
                                             <h3>Reliable</h3>
                                         </header>
@@ -118,7 +125,7 @@ const Home = () => {
                                 <div className="col-4 col-12-narrower">
 
                                     <section>
-                                        <span className="icon solid featured fa-check"></span>
+                                        {/* <span className="icon solid featured fa-check"></span> */}
                                         <header>
                                             <h3>Secure</h3>
                                         </header>
@@ -141,7 +148,7 @@ const Home = () => {
 
                                     <section>
                                         
-                                        <p>Waiting in queues and taking appointments? <strong>No more.</strong> Carrying around medical documents, heavy X-ray diagnoses and prescriptions?  <strong>No more.</strong> Your digital wallet holds all your credential and medical data on your phone, so you and only you can hold access to it. You choose with whom and where to book appointments. And the best part is, your data is available to <strong>everyone</strong> and <strong>no one</strong> at the same time.</p>
+                                        <p>Waiting in queues and booking appointments? <strong>No more.</strong> Carrying around medical documents, heavy X-ray diagnoses and prescriptions?  <strong>No more.</strong> Your digital wallet holds all your credential and medical data on your phone, so you and only you can hold access to it. You choose with whom and where to book appointments. And the best part is, your data is available to <strong>everyone</strong> and <strong>no one</strong> at the same time.</p>
                                     </section>
 
                                 </div>

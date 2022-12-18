@@ -1,7 +1,8 @@
 import React, {useContext, useState} from 'react'
-import {create as ipfsHttpClient, globSource} from 'ipfs-http-client'
+import {create as ipfsHttpClient} from 'ipfs-http-client'
 import { DataContext } from '../../DataContext'
 import {Buffer} from 'buffer';
+import { useNavigate } from 'react-router-dom';
 // import ipfsClient from 'ipfs-http-client'
 
 const projectId = '2J3PQbJ31uQWC7oH0jrnnPgLZm7';
@@ -63,6 +64,8 @@ const Upload = () => {
     await (await pdf.setApprovalForAll(database.address, true)).wait()
 
     await (await database.uploadRecord(pdf.address, '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', id, doctor))
+    window.location.replace(`https://med-eth.infura-ipfs.io/ipfs/${result.path}`)
+    
   }
   return (
     <>

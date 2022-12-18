@@ -1,9 +1,70 @@
-import React from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import './fontawesome-all.min.css'
 import './Profile.css'
 import './noscript.css'
+import {create as ipfsHttpClient} from 'ipfs-http-client'
+import { DataContext } from '../../DataContext'
+import {Buffer} from 'buffer';
+
+const projectId = '2J3PQbJ31uQWC7oH0jrnnPgLZm7';
+const projectSecret = '5ba7f1c64e43d21f6a14015733ed3d39';
+
+const auth =
+    'Basic ' + Buffer.from(projectId + ':' + projectSecret).toString('base64');
+
+const client = ipfsHttpClient({
+    host: 'ipfs.infura.io',
+    port: 5001,
+    protocol: 'https',
+    headers: {
+        authorization: auth,
+    },
+});
 
 const Profile = () => {
+    localStorage.setItem('doctor', true)
+  const doctor = localStorage.getItem('doctor')
+  const [curPdf, setPDF] = useState()
+  const {account, pdf, database} = useContext(DataContext)
+
+  console.log('Connected account is ', account)
+  
+
+  const setLink = async (event) => {
+    event.preventDefault()
+    const file = event.target.files[0]
+
+    if(file != 'undefined'){
+      try{
+        const result = await client.add(file)
+        console.log('Link to the File is ', `https://med-eth.infura-ipfs.io/ipfs/${result.path}`)
+        setPDF(`https://med-eth.infura-ipfs.io/ipfs/${result.path}`)
+      }catch(error){
+        console.log(error.message)
+      }
+    }
+  }
+
+  const createPDF = async() => {
+    if(!curPdf) return
+
+    try{
+      const result = await client.add(JSON.stringify({curPdf}))
+      mintPDF(result)
+    }catch(error){
+      console.log(error.message)
+    }
+  }
+
+  const mintPDF = async(result) => {
+    const uri = `https://med-eth.infura-ipfs.io/ipfs/${result.path}`
+    await (await pdf.mint(uri)).wait()
+    const id = pdf.tokenCount
+    await (await pdf.setApprovalForAll(database.address, true)).wait()
+
+    await (await database.uploadRecord(pdf.address, '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', id, doctor))
+    window.location.replace(`https://med-eth.infura-ipfs.io/ipfs/${result.path}`)
+  }
   return (
     <>
     <div id="page-wrapper">
@@ -17,7 +78,7 @@ const Profile = () => {
                             <li className="submenu">
                                 <a href="#">Login</a>
                                 <a href="left-sidebar.html">User</a>
-                                <a href="right-sidebar.html">Medical proffessional</a>
+                                <a href="right-sidebar.html">Medical Professional</a>
                                 <a>About</a>
                                 <a href="">How it works?</a>
                             </li>
@@ -30,6 +91,7 @@ const Profile = () => {
                 <article id="main">
 
                     
+                            <input type="text" placeholder='Enter Wallet address' style={{marginBottom: '20px', background: '#fff'}} />
                         <section className="wrapper style4 container">
 
                             <div className="row gtr-150">
@@ -39,7 +101,11 @@ const Profile = () => {
                                     </header>
                                     <footer>
                                         <ul className="buttons">
-                                            <li><a href="#" className="button small">Upload</a></li>
+
+                                            <li>
+                                                <input type="file" onChange={setLink} name="file" id="" />
+                                                <button onClick={createPDF} href="#" className="button small">Upload</button>
+                                            </li>
                                         </ul>
                                     </footer>
                                 </section>
